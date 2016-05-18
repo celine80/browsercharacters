@@ -1,0 +1,5 @@
+dns,cache,cookie(请求中携带的规则？)
+js 和 css 阻塞
+现代浏览器实现多个解析进程，而非以前的单线程
+异步和同步
+document.write
