@@ -1,12 +1,26 @@
 浏览器加载解析到渲染过程中伴随事件
-加载之初伴随着 DOM的一系列事件，可以通过 document.readyState来了解状态（state=document.readyState)
-1>state==loading
-  document 还在加载
-2>state==interactive
-  DOMContentLoaded事件已经触发，文档树已经渲染完成。
-  DOMContentLoaded:HTML文档加载并解析完毕完毕，不包含stylesheets, images, and subframes。
-  注：DOMContentLoaded事件不支持 on+type的形式调用。
-3>state==complete
-  load 事件已经触发，文档及其引用资源加载完成。
-readystatechange 事件会伴随事件的变化而被触发，但不能依赖，在不同浏览器和对本地远程资源表现不一致的事件触发序列。
-jQuery 中对于 ready 方法针对的状态？no resource code no reality!
+一，加载之初伴随着 DOM的一系列事件，可以通过 document.readyState来了解状态（state=document.readyState)
+  1>state==loading
+    document 还在加载
+  2>state==interactive
+    DOMContentLoaded事件已经触发，文档树已经渲染完成。
+    
+  3>state==complete
+    window.onload 事件已经触发，文档及其引用资源加载完成。
+二，文档的整个生命周期涉及事件
+  依次如下（window 事件均已标识，其余为 document 事件）：
+    loading >DOMContentLoaded >load >pageshow >window.onbeforeunload >pagehide >window.onunload
+  1>DOMContentLoaded 
+    DOMContentLoaded:HTML文档加载并解析完毕，不包含stylesheets, images, and subframes等引用资源；
+    浏览器限制: IE>=9；。
+    对于 IE<8的支持，可以使用IE 独有方法[nodeObject].doScroll（支持：IE<=10）的方法来判断。定期检查document.documentElement.doScroll("specified Strings")是否可以用(成功返回S_OK,否则返回 an HRESULT error code.)，从而判断文档是否加载完。
+    resource:https://msdn.microsoft.com/en-us/library/ms536414%28VS.85%29.aspx
+    注：DOMContentLoaded事件不支持 on+type的形式调用
+  3>beforeunload:离开页面时触发。
+  2>pageshow & pagehide:页面在历史进程中的页面在切入和切出时触发。
+  4>unload:在 beforeunload 之后触发，触发条件是：1,页面所有内容不可见，2,页面中的所有资源依旧还在，但对用户完全不可见；3,用户无法做任何的交互行为,包括 alert\window.open。
+  5>判断文档加载状态事件：readystatechange。
+    document.onreadystatechange
+三，文档加载完成的判断
+ 事件会伴随事件的变化而被触发，但不能依赖，在不同浏览器和对本地远程资源表现不一致的事件触发序列。
+
