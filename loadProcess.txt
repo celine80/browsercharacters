@@ -1,0 +1,12 @@
+浏览器加载解析到渲染过程中伴随事件
+加载之初伴随着 DOM的一系列事件，可以通过 document.readyState来了解状态（state=document.readyState)
+1>state==loading
+  document 还在加载
+2>state==interactive
+  DOMContentLoaded事件已经触发，文档树已经渲染完成。
+  DOMContentLoaded:HTML文档加载并解析完毕完毕，不包含stylesheets, images, and subframes。
+  注：DOMContentLoaded事件不支持 on+type的形式调用。
+3>state==complete
+  load 事件已经触发，文档及其引用资源加载完成。
+readystatechange 事件会伴随事件的变化而被触发，但不能依赖，在不同浏览器和对本地远程资源表现不一致的事件触发序列。
+jQuery 中对于 ready 方法针对的状态？no resource code no reality!
